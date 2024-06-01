@@ -1,0 +1,100 @@
+﻿@inject IHttpContextAccessor _context
+@model List<Picture>
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["error"] != null)
+{
+    <script>
+        alert(@TempData["error"]);
+    </script>
+}
+
+<div id="pProfile">
+    @if ((string)TempData["username"] == _context.HttpContext.Session.GetString("username"))
+    {
+        <!--Đăng xuất-->
+        <div style="display:flex;justify-content:flex-end">
+            <div id="logout" style="border-radius: 10px;background-color:lightgray;width:fit-content;">
+                <a id="cLogout" style="color:#4d61fc; font-weight:700; text-decoration:underline;"
+                   class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Đăng Xuất</a>
+            </div>
+        </div>
+    }
+
+    <p style="margin-top:5%;margin-bottom:5%;font-size:xx-large;font-weight:700;text-align:center;color:#4d61fc">
+        @TempData["username"]</p>
+
+    @if ((string)TempData["username"] == _context.HttpContext.Session.GetString("username"))
+    {
+        <!--Tải ảnh lên-->
+        <div style="display:flex;justify-content:center">
+            <div id="upload" style="border-radius: 10px;background-color:#4d61fc;width:fit-content;">
+                <a id="cUpload" style="color:white; font-weight:700;" class="nav-link" href="/upload">Tải ảnh lên</a>
+            </div>
+        </div>
+
+        <div style="border-bottom:solid 1px black; margin-bottom:10px">
+            <div id="logout" style="border-radius: 10px;background-color:lightgray;width:fit-content;padding:10px;
+                color:#4d61fc;font-weight:700; border:solid 1px black">
+                Ảnh của bạn
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (_context.HttpContext.Session.GetString("username") != null)
+        {
+            @if (TempData["followed"] == null)
+            {
+                <!--Quan tâm-->
+                <div style="display:flex;justify-content:center">
+                    <div id="follow">
+                        <form id="cFollow" asp-action="AddFollow" asp-controller="Account" method="post">
+                            <button name="username" value="@TempData["username"]" style="background-color:#4d61fc;padding:10px;color:white;
+                            border:none;border-radius:10px;font-weight:700;">
+                                Quan tâm
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!--Bỏ quan tâm-->
+                <div style="display:flex;justify-content:center">
+                    <div id="follow">
+                        <form id="cFollow" asp-action="DeleteFollow" asp-controller="Account" method="post">
+                            <button name="username" value="@TempData["username"]" style="background-color:red;padding:10px;color:white;
+                            border:none;border-radius:10px;font-weight:700;">
+                                Bỏ quan tâm
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+
+        <div style="border-bottom:solid 1px black; margin-bottom:10px">
+            <div id="logout" style="border-radius: 10px;background-color:lightgray;width:fit-content;padding:10px;
+                color:#4d61fc;font-weight:700; border:solid 1px black">Ảnh của người dùng này</div>
+        </div>
+    }
+
+
+    <!--Danh sách ảnh-->
+    <ul id="picList" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly; 
+        padding-inline:5%;">
+        @foreach (var picture in Model)
+        {
+            <li style="width:300px;padding-bottom:5%">
+                <a href="/picture/@picture.Id">
+                    <img src="@Url.Content(picture.Path)" style="width: 100%; height: auto;border-radius:10px" />
+                </a>
+            </li>
+        }
+    </ul>
+
+</div>
+

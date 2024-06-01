@@ -1,0 +1,21 @@
+﻿@inject IHttpContextAccessor _context
+@model List<Picture>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="pIndex">
+    <!--Danh sách ảnh đề xuất-->
+    <ul id="mainContent" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly; 
+        padding-inline:5%;">
+        @foreach (var picture in Model)
+        {
+            <li style="width:300px;padding-bottom:5%">
+                <a href="/picture/@picture.Id">
+                    <img src="@Url.Content(picture.Path)" style="width: 100%; height: auto;border-radius:10px" />
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+

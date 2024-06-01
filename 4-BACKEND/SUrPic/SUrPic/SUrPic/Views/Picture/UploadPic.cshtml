@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "UploadPic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="resUpload">
+    <div style="display:inline;">
+        <!--back-->
+        <div id="back" style="width:fit-content;border-radius: 10px;background-color:#4d61fc;">
+            <a id="cback" style="color:white; font-weight:700;" class="nav-link" asp-area="" asp-controller="Account"
+               asp-action="Profile"><span class="fas fa-arrow-left"></span></a>
+        </div>
+    </div>
+
+    <!--Kết quả-->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="color:red">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    else
+    {
+        <div class="logo">
+            <p class="brand-logo" style="font-weight:700; color:#4d61fc;font-size:xx-large;text-decoration:none">Bạn đã tải ảnh lên thành công!</p>
+        </div>
+    }
+
+</div>
+

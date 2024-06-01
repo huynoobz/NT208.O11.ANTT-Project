@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "AddFollow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pResFollow">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="color:red">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</div>
+

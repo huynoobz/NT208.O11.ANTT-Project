@@ -1,0 +1,81 @@
+﻿@inject IHttpContextAccessor _context
+@model List<ICare>
+@{
+    ViewData["Title"] = "Follow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pFollow">
+    <!--Lựa chọn danh sách-->
+    <ul class="navbar-nav" style="margin-right:auto;display:flex;flex-direction:row; padding-top:10px;
+        border-bottom:solid 1px black">
+        <li id="byImg" class="nav-item" style="border-radius: 10px;background-color:#4d61fc;width:50%;
+            text-align:center">
+            <a id="cByImg" style="text-decoration:none;color:white;">Hình ảnh</a>
+        </li>
+
+        <li id="byAcc" class="nav-item" style="border-radius: 10px;width:50%;text-align:center">
+            <a id="cByAcc" style="text-decoration:none">Tài khoản</a>
+        </li>
+    </ul>
+
+    <!--Danh sách ảnh-->
+    <ul id="picList" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly;
+                padding-inline:5%;">
+        @if (Model[1] is PicListCare picList)
+            foreach (var pic in picList.List)
+            {
+                <li style="width:300px;padding-bottom:5%">
+                    <a href="/picture/@pic.Id">
+                        <img src="@Url.Content(pic.Path)" style="width: 100%; height: auto;border-radius:10px" />
+                    </a>
+                </li>
+            }
+    </ul>
+
+    <!--Danh sách tài khoản-->
+    <ul id="accList" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly;
+                padding-inline:5%;display:none">
+        @if (Model[0] is UserListCare strList)
+            foreach (var acc in strList.List)
+            {
+                <li style="width:300px;padding:10px">
+                    <a href="/profile/@acc">
+                        <button style="background-color:#4d61fc;padding:10px;color:white;
+                                    border:none;border-radius:10px;width:300px">
+                            @acc
+                        </button>
+                    </a>
+                </li>
+            }
+    </ul>
+</div>
+
+<script>
+    var byImg = document.getElementById("byImg");
+    var byAcc = document.getElementById("byAcc");
+
+    //Cập nhật giao diện
+    byImg.addEventListener("click", function () {
+        if (byImg.style.backgroundColor !== "#4d61fc") {
+            byAcc.style.backgroundColor = "white";
+            byImg.style.backgroundColor = "#4d61fc";
+            document.getElementById("cByImg").style.color = "white";
+            document.getElementById("cByAcc").style.color = "black";
+            document.getElementById("picList").style.display = "flex";
+            document.getElementById("accList").style.display = "none";
+        }
+    });
+    byAcc.addEventListener("click", function () {
+        if (byAcc.style.backgroundColor !== "#4d61fc") {
+            byAcc.style.backgroundColor = "#4d61fc";
+            byImg.style.backgroundColor = "white";
+            document.getElementById("cByImg").style.color = "black";
+            document.getElementById("cByAcc").style.color = "white";
+            document.getElementById("picList").style.display = "none";
+            document.getElementById("accList").style.display = "flex";
+        }
+    });
+
+</script>
+
