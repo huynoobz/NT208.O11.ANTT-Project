@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewData["Title"] = "UploadPic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .inputPair {
+        display: inline-flex
+    }
+
+        .inputPair input{
+            border-radius: 5px
+        }
+
+        .inputPair button {
+            border-radius: 5px;
+            background-color: lightgray;
+            color: black;
+            font-weight: 700;
+            font-size: xx-large
+        }
+
+</style>
+<div id="upload">
+    <div style="display:inline;">
+        <!--back-->
+        <button id="cback" style="color:white; font-weight:700;border:none;width:fit-content;border-radius: 10px;background-color:#4d61fc;" class="nav-link">
+            <span class="fas fa-arrow-left" onclick="back()"></span></button>
+
+        <!--Tiêu đề-->
+        <div class="logo">
+            <p class="brand-logo" style="font-weight:700; color:#4d61fc;font-size:xx-large;text-decoration:none">Tải ảnh lên</p>
+        </div>
+    </div>
+
+    <form id="fUpload" asp-action="UploadPic" asp-controller="Picture" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+        <!--Drag & drop file area-->
+        <div style="display:inline-flex;width:100%;justify-content:space-around">
+            <div id="receiveFile" style="background-color:lightgray; width:50%; border-radius:10px;
+                text-align:center;display:inline;font-weight:700;font-size:xx-large;padding:5%;position:relative">
+                <input type="file" name="File" id="File"
+                    accept="image/bmp,image/jpeg,image/png,image/tiff,image/webp" multiple="" tabindex="0" 
+                    style="cursor: pointer; height: 100%; opacity: 0; position: absolute; width: 100%; left: 0px; 
+                    top: 0px; font-size: 0px;" onchange="displayImage(this)">
+                <p>Chọn một tệp hoặc kéo thả tệp vào đây</p>
+                <br />
+                <span class="fas fa-arrow-down" style="color:black;"></span>
+            </div>
+            <div id="imgBox" style="width:50%;display:inline;display:none;position:relative">
+                <img id="cImgBox" style="width:100%;height:auto;border-radius:10px;" />
+            </div>
+        </div>
+        <p id="warnImgNull" class="alert alert-danger" style="display:none">*Chưa có ảnh</p>
+
+        <br />    <br />
+
+        <!--Tên và tags-->
+        <div style="padding-left:25%;padding-bottom:0">
+            <p style="font-weight:600">Tên ảnh</p>
+            <!--Tên ảnh-->
+            <input id="Name" type="text" name="Name" style="border-radius:5px;">
+            <p id="warnNameNull" class="alert alert-danger" style="display:none">*Chưa có tên</p>
+
+            <br />    <br />
+            <p style="font-weight:600">Tags</p>
+            <!--Tags-->
+            <div style="display:inline-flex">
+                <!--Tag-->
+                <div id="inputContainer" tyle="display:inline-flex">
+                    <div class="inputPair">
+                        <input type="text" name="Tags">
+                        <button onclick="deletePair(this)">x</button>
+                    </div>
+                </div>
+
+                <!--Thêm tag-->
+                <button type="button" style="background-color:#4d61fc;color:white;font-size:xx-large;font-weight:700;border-radius:50%;margin-left:10px" onclick="addPair()">+</button>
+            </div>
+            <p id="warnTagsInvalid" class="alert alert-danger" style="display:none">*Tag chỉ có thể chứa các kí tự: [a-z], [A-Z], [0-9], _</p>
+        </div>
+
+        <br />    <br />
+
+        <!--Tải ảnh lên-->
+        <div style="display:flex;justify-content:center">
+            <button id="cBUpload" style="color:white; font-weight:700;border-radius:10px;background-color:#4d61fc;
+                border:none;padding:10px">Tải ảnh lên <span class="fas fa-upload"></span>
+            </button>
+        </div>
+    </form>
+</div>
+<script src="~/lib/jquery/dist/jquery.filedrop.js"></script>
+<script>
+    //Hiện ảnh vừa upload
+    function displayImage(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById("receiveFile").style.display="none";
+            document.getElementById("imgBox").style.display = "inline";
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById("cImgBox").src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    //Thêm Tag
+    function addPair() {
+        var inputContainer = document.getElementById('inputContainer');
+
+        var newPair = document.createElement('div');
+        newPair.classList.add('inputPair');
+
+        var newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.name = 'Tags'
+        newInput.onchange = function(){
+            checkSpecialCharacters(this);
+        }
+
+        var newDeleteButton = document.createElement('button');
+        newDeleteButton.textContent = 'x';
+        newDeleteButton.onclick = function () {
+            deletePair(this);
+        };
+
+        newPair.appendChild(newInput);
+        newPair.appendChild(newDeleteButton);
+
+        inputContainer.appendChild(newPair);
+    }
+
+    //Xóa Tag
+    function deletePair(button) {
+        var inputContainer = document.getElementById('inputContainer');
+        var pairToRemove = button.parentElement;
+        inputContainer.removeChild(pairToRemove);
+    }
+
+    //Kiểm tra trước khi gửi
+    function validateForm() {
+        var submit=true;
+        if(document.getElementById("File").value===""){
+            submit=false;
+            document.getElementById('warnImgNull').style.display="block";
+        } else{
+            document.getElementById('warnImgNull').style.display = "none";
+        }
+        if (document.getElementById("Name").value === "") {
+            submit = false;
+            document.getElementById('warnNameNull').style.display = "block";
+        } else {
+            document.getElementById('warnNameNull').style.display = "none";
+        }
+
+        var specialCharRegex = /[!@@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?]+/;
+        document.getElementsByName("Tags").forEach(function (element) {
+            if (specialCharRegex.test(element.value)) {
+                document.getElementById("warnTagsInvalid").style.display = "block";
+                submit = false;
+            }
+        });
+        if(submit === true)
+            document.getElementById("warnTagsInvalid").style.display = "none";
+
+        return submit;
+    }
+
+    //Back
+    function back(){
+        window.history.back();
+    }
+</script>

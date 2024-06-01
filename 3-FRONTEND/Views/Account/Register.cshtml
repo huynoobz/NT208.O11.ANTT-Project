@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pRegister" class="container">
+    <!-- logo -->
+    <div class="logo">
+        <a class="brand-logo" style="font-weight:700; color:#4d61fc;font-size:xx-large;text-decoration:none" href="../../">SUrPic</a>
+    </div>
+    <!-- //logo -->
+
+    <div class="forms-grid">
+        <!-- register -->
+        <div class="register">
+            <span class="fas fa-user-circle"></span>
+            <strong>Đăng ký</strong>
+            <form asp-action="AddAccount" asp-controller="Account" method="post" class="register-form" onsubmit="return validateForm()">
+                <fieldset>
+                    <div class="form">
+                        <!--usrename-->
+                        <div class="form-row">
+                            <span class="fas fa-user"></span>
+                            <label class="form-label" for="input">Tên đăng nhập</label>
+                            <input id="userName" name="userName" type="text" class="form-text">
+                            <p id="warnUserNull" class="alert alert-danger" style="display:none;color:red">*Không thể để trống tên đăng nhập</p>
+                            <!--Nếu đăng ký thất bại-->
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger" style="color:red">
+                                    @TempData["ErrorMessage"]
+                                </div>
+                            }
+                        </div>
+
+                        <!--password-->
+                        <div class="form-row">
+                        <span id="shPassword" class="fas fa-eye"></span>
+                            <label class="form-label" for="input">Mật khẩu</label>
+                            <input id="password" name="password" type="password" class="form-text" style="-webkit-appearance:none;-moz-appearance:none;appearance:none">
+                            <p id="warnPass6" class="alert alert-danger" style="color:red; display:none">*Mật khẩu phải có ít nhất 6 kí tự</p>
+                            <p id="warnPassNull" class="alert alert-danger" style="display:none;color:red">*Không thể để trống mật khẩu</p>
+                        </div>
+
+                        <!--Re-password-->
+                        <div class="form-row">
+                            <span id="shVerifyPassword" class="fas fa-eye"></span>
+                            <label class="form-label" for="input">Xác nhận mật khẩu</label>
+                            <input id="verifyPassword" type="password" class="form-text" style="-webkit-appearance:none;-moz-appearance:none;appearance:none">
+                            <p id="warnVerifyPass" class="alert alert-danger" style="color:red; display:none">
+                                *Xác nhận mật khẩu thất bại! Xác nhận mật khẩu và mật khẩu không giống nhau!</p>
+                        </div>
+
+                        <!--Nút đăng ký-->
+                        <div class="form-row button-login">
+                            <button style="border:none;border-radius:5px;color:white;background-color:#4d61fc;font-weight:700">
+                                Đăng ký <span class="fas fa-arrow-right" style="color:#ffffff"></span>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <!-- //register -->
+
+    </div>
+</div>
+
+<script>
+    var user = document.getElementById("userName");
+    var pass = document.getElementById("password");
+    var vPass = document.getElementById("verifyPassword");
+
+    var shPass = document.getElementById("shPassword");
+    var shVPass = document.getElementById("shVerifyPassword");
+
+    //Hiện mật khẩu 
+    shPass.addEventListener("click", function () {
+        if (shPass.classList.contains("fa-eye")) {
+            shPass.classList.remove("fa-eye");
+            shPass.classList.add("fa-lock");
+            pass.type = "text";
+        } else {
+            shPass.classList.add("fa-eye");
+            shPass.classList.remove("fa-lock");
+            pass.type = "password";
+        }
+    });
+    shVPass.addEventListener("click", function () {
+        if (shVPass.classList.contains("fa-eye")) {
+            shVPass.classList.remove("fa-eye");
+            shVPass.classList.add("fa-lock");
+            vPass.type = "text";
+        } else {
+            shVPass.classList.add("fa-eye");
+            shVPass.classList.remove("fa-lock");
+            vPass.type = "password";
+        }
+    });
+
+    //Kiểm tra trước khi gửi
+    function validateForm() {
+        var submit = true;
+        if (pass.value === "") {//Mật khẩu không rỗng
+            document.getElementById("warnPassNull").style.display = "block";
+            submit = false; 
+        } else {
+            document.getElementById("warnPassNull").style.display = "none";
+        }
+        if (user.value === "") {//Tên không rỗng
+            document.getElementById("warnUserNull").style.display = "block";
+            submit = false; 
+        } else {
+            document.getElementById("warnUserNull").style.display = "none";
+        }
+        if (pass.value.length < 6) {//Mật khẩu ít nhất 6 kí tự
+            document.getElementById("warnPass6").style.display = "block";
+            submit = false;
+        } else {
+            document.getElementById("warnPass6").style.display = "none";
+        }
+        if (pass.value !== vPass.value) {//Mật khẩu được nhập lại chính xác
+            document.getElementById("warnVerifyPass").style.display = "block";
+            submit = false;
+        } else {
+            document.getElementById("warnVerifyPass").style.display = "none";
+        }
+
+        return submit;
+    }
+
+</script>
+
+<!--Nếu đăng ký thất bại-->
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        document.getElementById("userName").value = "@TempData["Username"]";
+        document.getElementById("password").value = "@TempData["Password"]";
+    </script>
+}
+

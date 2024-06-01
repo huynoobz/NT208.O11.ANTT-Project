@@ -1,0 +1,126 @@
+﻿@inject IHttpContextAccessor _context
+@model Picture
+@{
+    ViewData["Title"] = "ViewPic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Giao diện xem ảnh-->
+<div id="viewPic" style="display:flex">
+    <a id="lDown" href="@Url.Content(Model.Path)" download></a>
+    <button id="quitVPic" onclick="quit()" class="fas fa-arrow-left" style="margin-left:1%;height:fit-content;
+            width:10%;background-color:#4d61fc;border:none;border-radius:10px;padding:10px"></button>
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger" style="color:red">
+            @TempData["eror"]
+        </div>
+    }
+    else
+    {
+        <img id="pic" src="@Url.Content(Model.Path)" style="width:60%;height:auto;margin-left:10%;margin-right:10%;
+            border-radius:10px">        
+    }
+    <div style="width:10%;display:block">
+        <button id="download" onclick="downloadImage()" class="fas fa-download" style="margin-right:1%;
+            height:fit-content;background-color:#4d61fc;border:none;border-radius:10px;padding:10px;">
+        </button>
+
+        @if (_context.HttpContext.Session.GetString("username") != null)
+        {
+            //Nút lưu ảnh
+            <button id="save" class="fas fa-heart" style="margin-right:1%;color:white;
+                    height:fit-content;background-color:#4d61fc;border:none;border-radius:10px;padding:10px;"></button>
+        }
+
+        <br /><br />
+        <label for="name">Tên ảnh</label>
+        <input style="width:100%" type="text" id="name" value="@Model.Name" readonly>
+
+        @if (_context.HttpContext.Session.GetString("username") != null) 
+            if (_context.HttpContext.Session.GetString("username") == Model.Owner)
+            {
+                <form method="post" asp-action="DeletePic" asp-controller="Picture" >
+                    <button value="@Model.Id" name="id" style="background-color:red;border:none;border-radius:10px;color:white;
+                        font-weight:700; margin-top:10px">Xóa ảnh</button>
+                </form>
+            }
+    </div>
+</div>
+
+<script type="text/javascript">
+    //Dùng ajax để kiểm tra lưu ảnh mà không mất giao diện hiện tại
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url: '@Url.Action("CheckSave","Picture")',
+        data: { id: @Model.Id },
+        success: function (data) {
+            if ('stat' in data) {
+                document.getElementById("save").style.color = "red";
+            } else {
+                document.getElementById("save").style.color = "white";
+            }
+        },
+        error: function (xhr) {
+            alert("Error while sending data");
+        }
+    });
+
+    //Tải ảnh
+    function downloadImage() {
+        document.getElementById("lDown").click();
+    }
+
+    //Thoát xem ảnh
+    function quit() {
+        window.history.back();
+    }
+</script>
+
+<!--Dùng ajax để thêm/xóa lưu ảnh mà không mất giao diện hiện tại-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#save").click(function () {
+            if (document.getElementById("save").style.color !== "red") {
+                //Thêm
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AddSave","Picture")",
+                    dataType: "json",
+                    data: { id: @Model.Id },
+                    success: function (data) {
+                        if ('stat' in data) {
+                            document.getElementById("save").style.color = "red";
+                        } else {
+                            alert("Error while inserting data");
+                        }
+                    },
+                    error: function (xhr) {
+                        alert("Error while sending data");
+                    }
+                });
+            } else {
+                //Xóa
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("DeleteSave","Picture")",
+                    dataType: "json",
+                    data: { id: @Model.Id },
+                    success: function (data) {
+                        if ('stat' in data) {
+                            document.getElementById("save").style.color = "white";
+                        } else {
+                            alert("Error while inserting data");
+                        }
+                    },
+                    error: function (xhr) {
+                        alert("Error while sending data");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+

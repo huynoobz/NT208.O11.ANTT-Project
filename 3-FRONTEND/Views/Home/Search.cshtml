@@ -1,0 +1,155 @@
+﻿@inject IHttpContextAccessor _context
+@model ISearch
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="pSearch">
+    <!--Search box tài khoản-->
+    <form id="fSAcc" action="/search/acc" method="post" style="text-align:center;display:none" 
+        onsubmit="return validateForm()">
+        <input id="sBoxAcc" name="keyword" style="border:solid grey 1px; border-radius:5px;width:60%">
+        <button id="bSAcc" style="background-color:grey;border:none;border-radius:10px" type="submit">
+            <span class="fas fa-search"></span></button>
+    </form>
+
+    <!--Search box hình ảnh-->
+    <form id="fSImg" action="/search/pic" method="post" style="text-align:center" 
+        onsubmit="return validateForm()">
+        <input id="sBoxImg" name="keyword" style="border:solid grey 1px; border-radius:5px;width:60%">
+        <button id="bSImg" style="background-color:grey;border:none;border-radius:10px">
+            <span class="fas fa-search"></span>
+        </button>
+    </form>
+
+    <!--Lựa chọn tìm kiếm cái gì-->
+    <ul class="navbar-nav" style="margin-bottom:10px;display:flex;flex-direction:row; padding-top:10px;
+        border-bottom:solid 1px black">
+        <li id="byImg" class="nav-item" style="border-radius: 10px;background-color:#4d61fc;width:50%;
+            text-align:center">
+            <a id="cByImg" style="text-decoration:none;color:white;">Hình ảnh</a>
+        </li>
+
+        <li id="byAcc" class="nav-item" style="border-radius: 10px;width:50%;text-align:center">          
+            <a id="cByAcc" style="text-decoration:none">Tài khoản</a>
+        </li>
+    </ul>
+
+    @if (TempData["by"] != null) 
+    {
+        //Danh sách tài khoản
+        if (TempData["by"] == "Acc")
+        {
+            <ul id="accList" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly; 
+                padding-inline:5%;">
+                @if(Model is StrListSearch strList)
+                    foreach (var acc in strList.StrList)
+                    {
+                        <li style="width:300px;padding:10px" >
+                            <a href="/profile/@acc">
+                                <button style="background-color:#4d61fc;padding:10px;color:white;
+                                    border:none;border-radius:10px;width:300px">@acc</button>
+                            </a>
+                        </li>
+                    }
+            </ul>
+        }
+
+        //Danh sách ảnh
+        if (TempData["by"] == "Img")
+        {
+            <ul id="picList" style="list-style:none; display: flex; flex-wrap:wrap; justify-content:space-evenly; 
+                padding-inline:5%;">
+                @if (Model is PicListSearch picList)
+                    foreach (var pic in picList.PicList)
+                    {
+                        <li style="width:300px;padding-bottom:5%">
+                            <a href="/picture/@pic.Id">
+                                <img src="@Url.Content(pic.Path)" style="width: 100%; height: auto;border-radius:10px" />
+                            </a>
+                        </li>
+                    }
+            </ul>
+        }
+    }
+</div>
+
+<!--Cập nhật giao diện sau tìm kiếm-->
+@if (TempData["by"] != null)
+{
+    
+    if (TempData["by"] == "Acc")
+    {
+        <script>
+            document.getElementById("byAcc").style.backgroundColor = "#4d61fc";
+            document.getElementById("byImg").style.backgroundColor = "white";
+            document.getElementById("cByImg").style.color = "black";
+            document.getElementById("cByAcc").style.color = "white";
+            document.getElementById("fSImg").style.display = "none";
+            document.getElementById("fSAcc").style.display = "block";
+
+            document.getElementById("sBoxAcc").value = "@TempData["keyword"]";
+        </script>
+    }
+    if (TempData["by"] == "Img")
+    {
+        <script>
+            document.getElementById("sBoxImg").value = "@TempData["keyword"]";
+        </script>
+    }
+}
+
+<script>
+    var byImg = document.getElementById("byImg");
+    var byAcc = document.getElementById("byAcc");
+
+    //Cập nhật giao diện
+    byImg.addEventListener("click",function(){
+        if (byImg.style.backgroundColor !== "#4d61fc") {
+            byAcc.style.backgroundColor="white";
+            byImg.style.backgroundColor = "#4d61fc";
+            document.getElementById("cByImg").style.color = "white";
+            document.getElementById("cByAcc").style.color = "black";
+            document.getElementById("fSImg").style.display = "block";
+            document.getElementById("fSAcc").style.display = "none";
+
+            if (document.getElementById("sBoxAcc").value !== ""){
+                document.getElementById("sBoxImg").value = document.getElementById("sBoxAcc").value;
+                document.getElementById("bSImg").click();
+            }
+        }
+    });
+    byAcc.addEventListener("click", function () {
+        if (byAcc.style.backgroundColor !== "#4d61fc") {
+            byAcc.style.backgroundColor = "#4d61fc";
+            byImg.style.backgroundColor = "white";
+            document.getElementById("cByImg").style.color = "black";
+            document.getElementById("cByAcc").style.color = "white";
+            document.getElementById("fSImg").style.display = "none";
+            document.getElementById("fSAcc").style.display = "block";
+
+            if (document.getElementById("sBoxImg").value !== "") {
+                document.getElementById("sBoxAcc").value = document.getElementById("sBoxImg").value;
+                document.getElementById("bSAcc").click();
+            }
+        }
+    });
+
+    //Kiểm tra trước khi gửi
+    function validateForm() {
+        var submit = true;
+
+        if (document.getElementById("sBoxAcc").value === "" && byAcc.style.backgroundColor === "#4d61fc") {
+            submit = false;
+        }
+        if (document.getElementById("sBoxImg").value === "" && byImg.style.backgroundColor === "#4d61fc") {
+            submit = false;
+        }
+
+        return submit;
+    }
+
+</script>
+
+

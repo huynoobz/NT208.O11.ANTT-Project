@@ -1,0 +1,43 @@
+<mxfile host="Electron" modified="2023-11-04T15:53:06.466Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="DUWtMWhwpLNp7914kbc9" version="21.7.5" type="device">
+  <diagram name="Page-1" id="tQ9-4Gspbx4OhVCBru70">
+    <mxGraphModel dx="941" dy="644" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="10" width="650" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-2" value="Tên dự án" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="20" y="15" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-3" value="Trang chủ" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="140" y="15" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-4" value="Tìm kiếm" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="260" y="15" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-5" value="Quan tâm" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="380" y="15" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-6" value="(Đăng nhập/Đăng ký) / Trang cá nhân" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="500" y="15" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-7" value="Body" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="10" y="90" width="650" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vnmwgRtOgY4vDuuRMTYw-8" target="vnmwgRtOgY4vDuuRMTYw-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-8" value="Header" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="720" y="25" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vnmwgRtOgY4vDuuRMTYw-10" target="vnmwgRtOgY4vDuuRMTYw-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vnmwgRtOgY4vDuuRMTYw-10" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Gồm:&lt;br&gt;+ Ảnh&lt;br&gt;+ Các kết quả tìm kiếm&lt;br&gt;+ Thông tin trang cá nhân&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="155" width="120" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
