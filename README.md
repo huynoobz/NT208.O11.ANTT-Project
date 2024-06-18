@@ -12,7 +12,7 @@
 - CSS3
 2. Back-end
 - ASP.NET Core MVC
-- SQL Server
+- Microsoft SQL Server
 
 ## Mô tả
 SUrPic là mà website mà người dùng có thể đăng tải ảnh của mình lên và các người dùng khác có thể xem và tương tác với ảnh đó.
